@@ -53,7 +53,8 @@ main h1 {
 }
 
 .register_form input[type="text"],
-.register_form input[type="password"] {
+.register_form input[type="password"],
+.register_form input[type="number"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
