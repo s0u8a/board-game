@@ -6,8 +6,9 @@ body {
 
 header {
     background-color: #ddd6c1;
-    color: #000;
+    color: #fff;
     padding: 15px 20px;
+    font-weight: bold;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,8 +16,8 @@ header {
 
 header h1 {
     margin: 0;
-    font-size: 1.2rem;
-    font-weight: normal;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .header-link {
@@ -58,6 +59,7 @@ main h1 {
 .register_form input[type="number"] {
     width: 100%;
     padding: 10px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
