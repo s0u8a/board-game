@@ -6,7 +6,7 @@
     <title>Board Game Cafe</title> <!-- タイトル -->
 
     <!-- 外部CSS読み込み -->
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="style/home.css">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
