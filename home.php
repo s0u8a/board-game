@@ -6,7 +6,7 @@
     <title>Board Game Cafe</title> <!-- タイトル -->
 
     <!-- 外部CSS読み込み -->
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="style/home.css">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
                 <a href="#" class="nav-link">予約管理</a>
             </nav>
 
-            <a href="#" class="login-btn">ログイン</a> <!-- ログインボタン -->
+            <a href="login.php" class="login-btn">ログイン</a> <!-- ログインボタン -->
         </div>
     </header>
 

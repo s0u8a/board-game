@@ -1,11 +1,13 @@
 body {
     font-family: sans-serif;
     margin: 0;
+    background-color: #f9f9f9;
 }
 
 header {
     background-color: #ddd6c1;
     color: #fff;
+    font-weight: bold;
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
@@ -14,8 +16,8 @@ header {
 
 header h1 {
     margin: 0;
-    font-size: 1.2rem;
-    font-weight: normal;
+    font-size: 1.5rem;
+    font-weight: bolder;
 }
 
 .header-link {
@@ -56,6 +58,7 @@ main h1 {
 .login_form input[type="password"] {
     width: 100%;
     padding: 10px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
