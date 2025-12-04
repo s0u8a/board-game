@@ -30,7 +30,7 @@
                 <a href="#" class="nav-link">予約管理</a>
             </nav>
 
-            <a href="#" class="login-btn">ログイン</a> <!-- ログインボタン -->
+            <a href="login.php" class="login-btn">ログイン</a> <!-- ログインボタン -->
         </div>
     </header>
 
