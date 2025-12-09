@@ -1,0 +1,114 @@
+@charset "UTF-8";
+
+/* =========================================
+   Admin Reservation Management Styles
+   ========================================= */
+
+/* Reuse some admin main styles if not global */
+.admin-main {
+    padding: 40px 0 80px;
+    min-height: calc(100vh - 200px);
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+/* Filter Section */
+.filter-section {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label {
+    font-weight: 700;
+    color: #555;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Reservation Table */
+.reservation-list-container {
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    /* For border radius */
+}
+
+.reservation-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+    /* Scroll on small screens if needed */
+}
+
+.reservation-table th,
+.reservation-table td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.reservation-table th {
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.reservation-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Status Badges */
+.status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+}
+
+.status-confirmed {
+    background-color: #27ae60;
+}
+
+.status-pending {
+    background-color: #f39c12;
+}
+
+.status-finished {
+    background-color: #95a5a6;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    .reservation-list-container {
+        overflow-x: auto;
+    }
+}
