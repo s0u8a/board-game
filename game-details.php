@@ -102,8 +102,8 @@
 
                 <!-- タブ切り替え（ホーム・一覧・レビュー） -->
                 <div class="tabs">
-                    <a href="index.html" class="tab">ホーム</a>
-                    <a href="game.html" class="tab">ゲーム一覧</a>
+                    <a href="home.php" class="tab">ホーム</a>
+                    <a href="game.php" class="tab">ゲーム一覧</a>
                     <a href="#" class="tab active">レビュー</a>
                 </div>
 
