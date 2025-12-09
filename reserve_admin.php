@@ -27,20 +27,22 @@
         <div class="container">
             <h1 class="page-title">予約管理</h1>
 
-            <!-- フィルター -->
+            <!-- タブ切り替え -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('future')">今後の予約</button>
+                <button class="tab-btn" onclick="switchTab('past')">過去の予約</button>
+            </div>
+
+            <!-- フィルター (ゲームのみ) -->
             <div class="filter-section">
                 <div class="filter-group">
-                    <label for="filter-month">年月</label>
-                    <input type="month" id="filter-month" onchange="filterReservations()">
-                </div>
-                <div class="filter-group">
-                    <label for="filter-game">ゲーム</label>
-                    <select id="filter-game" onchange="filterReservations()">
+                    <label for="filter-game">ゲームで絞り込み</label>
+                    <select id="filter-game" onchange="renderReservations()">
                         <option value="">すべて</option>
-                        <option value="catan">カタン</option>
-                        <option value="dominion">ドミニオン</option>
-                        <option value="carcassonne">カルカソンヌ</option>
-                        <option value="pandemic">パンデミック</option>
+                        <option value="カタン">カタン</option>
+                        <option value="ドミニオン">ドミニオン</option>
+                        <option value="カルカソンヌ">カルカソンヌ</option>
+                        <option value="パンデミック">パンデミック</option>
                     </select>
                 </div>
             </div>
@@ -55,46 +57,13 @@
                             <th>予約者名</th>
                             <th>人数</th>
                             <th>ゲーム</th>
-                            <th>ステータス</th>
                         </tr>
                     </thead>
                     <tbody id="reservation-list">
-                        <!-- モックデータ -->
-                        <tr data-date="2024-05-01" data-game="catan">
-                            <td>2024/05/01</td>
-                            <td>13:00</td>
-                            <td>山田 太郎</td>
-                            <td>4</td>
-                            <td>カタン</td>
-                            <td><span class="status status-confirmed">確定</span></td>
-                        </tr>
-                        <tr data-date="2024-05-03" data-game="dominion">
-                            <td>2024/05/03</td>
-                            <td>15:00</td>
-                            <td>鈴木 一郎</td>
-                            <td>2</td>
-                            <td>ドミニオン</td>
-                            <td><span class="status status-pending">未確定</span></td>
-                        </tr>
-                        <tr data-date="2024-04-28" data-game="carcassonne">
-                            <td>2024/04/28</td>
-                            <td>10:00</td>
-                            <td>田中 美咲</td>
-                            <td>3</td>
-                            <td>カルカソンヌ</td>
-                            <td><span class="status status-finished">完了</span></td>
-                        </tr>
-                        <tr data-date="2024-05-10" data-game="catan">
-                            <td>2024/05/10</td>
-                            <td>18:00</td>
-                            <td>高橋 健太</td>
-                            <td>4</td>
-                            <td>カタン</td>
-                            <td><span class="status status-confirmed">確定</span></td>
-                        </tr>
+                        <!-- JSで描画 -->
                     </tbody>
                 </table>
-                <p id="no-result-message" style="display:none; text-align:center; margin-top:20px;">条件に一致する予約はありません。</p>
+                <p id="no-result-message" style="display:none; text-align:center; margin-top:20px; padding: 20px;">表示する予約はありません。</p>
             </div>
         </div>
     </main>
@@ -106,66 +75,105 @@
     </footer>
 
     <script>
-        // 初期化: 今月をセット
-        window.addEventListener('DOMContentLoaded', () => {
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            document.getElementById('filter-month').value = `${yyyy}-${mm}`;
-            
-            // 初回フィルタリング（任意だが、全件表示したい場合はmonthの値をemptyにするか、ロジック調整）
-            // ここでは一旦フィルタリングせずに、デフォルトで何か表示するか、
-            // もしくはリスト側の日付に合わせてフィルタリングするか。
-            // ユーザー要望的に「一覧表示のみで大丈夫」かつ「フィルターをかけられる」なので、
-            // 最初は全件または直近が表示されている方が親切かも。
-            // 今回はモックデータが少ないので、とりあえずフィルタ関数を呼んで、初期値（今月）で絞る挙動にする。
-            // モックデータの日付が5月メインなので、5月にセットしてみるデモ用ロジック。
-            document.getElementById('filter-month').value = "2024-05";
-            filterReservations();
-        });
+        // モックデータ (日付はYYYY-MM-DD形式で管理)
+        // 動作確認のため、現在日付前後のデータを適当に用意
+        const todayStr = new Date().toISOString().split('T')[0];
+        
+        // 過去の日付生成用ヘルパー
+        const addDays = (days) => {
+            const d = new Date();
+            d.setDate(d.getDate() + days);
+            return d.toISOString().split('T')[0];
+        };
 
-        function filterReservations() {
-            const monthVal = document.getElementById('filter-month').value; // YYYY-MM
-            const gameVal = document.getElementById('filter-game').value;
+        const mockReservations = [
+            { date: addDays(0), time: '13:00', name: '山田 太郎', count: 4, game: 'カタン' },
+            { date: addDays(0), time: '18:00', name: '高橋 健太', count: 4, game: 'カタン' },
+            { date: addDays(2), time: '15:00', name: '鈴木 一郎', count: 2, game: 'ドミニオン' },
+            { date: addDays(5), time: '10:00', name: '佐藤 花子', count: 6, game: 'パンデミック' },
+            { date: addDays(-1), time: '14:00', name: '田中 美咲', count: 3, game: 'カルカソンヌ' },
+            { date: addDays(-5), time: '19:00', name: '伊藤 博文', count: 5, game: 'カタン' },
+            { date: addDays(-10), time: '12:00', name: '渡辺 徹', count: 2, game: 'ドミニオン' }
+        ];
 
-            const rows = document.querySelectorAll('#reservation-list tr');
-            let visibleCount = 0;
+        let currentTab = 'future'; // 'future' or 'past'
 
-            rows.forEach(row => {
-                const dateStr = row.getAttribute('data-date'); // YYYY-MM-DD
-                const gameStr = row.getAttribute('data-game');
+        function switchTab(tabName) {
+            currentTab = tabName;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // クリックされたボタンにactiveをつける (テキスト内容で判定するか、引数で渡すか。今回は簡易的にindexやeventから判定もできるが、明示的にクラス操作する)
+            // event.targetが使えない呼び出しもあるため、tabNameで判定してDOM取得推奨だが、今回はonclick="switchTab"なのでevent.targetでOK
+            if(event) event.target.classList.add('active');
 
-                // 年月チェック
-                let matchMonth = true;
-                if (monthVal) {
-                    if (!dateStr.startsWith(monthVal)) {
-                        matchMonth = false;
-                    }
-                }
+            renderReservations();
+        }
 
-                // ゲームチェック
-                let matchGame = true;
-                if (gameVal) {
-                    if (gameStr !== gameVal) {
-                        matchGame = false;
-                    }
-                }
+        function renderReservations() {
+            const gameFilter = document.getElementById('filter-game').value;
+            const listBody = document.getElementById('reservation-list');
+            const noMsg = document.getElementById('no-result-message');
+            listBody.innerHTML = '';
 
-                if (matchMonth && matchGame) {
-                    row.style.display = '';
-                    visibleCount++;
+            // 今日の日付 (YYYY-MM-DD)
+            const today = new Date().toISOString().split('T')[0];
+
+            // データの振り分け
+            let filtered = mockReservations.filter(r => {
+                // ゲームフィルタ
+                if (gameFilter && r.game !== gameFilter) return false;
+                
+                // タブによる期間フィルタ
+                if (currentTab === 'future') {
+                    // 今日以降 (今日含む)
+                    return r.date >= today;
                 } else {
-                    row.style.display = 'none';
+                    // 昨日以前
+                    return r.date < today;
                 }
             });
 
-            const msg = document.getElementById('no-result-message');
-            if (visibleCount === 0) {
-                msg.style.display = 'block';
+            // ソート
+            // 今後の予約: 日付が近い順 (昇順)
+            // 過去の予約: 日付が近い順 (降順 = 新しい順)
+            filtered.sort((a, b) => {
+                if (currentTab === 'future') {
+                    if (a.date === b.date) return a.time.localeCompare(b.time); // 同日は時間順
+                    return a.date.localeCompare(b.date);
+                } else {
+                    if (a.date === b.date) return b.time.localeCompare(a.time); // 同日は時間遅い順(任意)
+                    return b.date.localeCompare(a.date);
+                }
+            });
+
+            if (filtered.length === 0) {
+                noMsg.style.display = 'block';
             } else {
-                msg.style.display = 'none';
+                noMsg.style.display = 'none';
+                filtered.forEach(r => {
+                    const tr = document.createElement('tr');
+                    
+                    // 日付表示生成
+                    let dateDisplay = r.date.replace(/-/g, '/'); // YYYY/MM/DD
+                    if (r.date === today) {
+                        dateDisplay += ' <span class="badge-today">今日</span>';
+                    }
+
+                    tr.innerHTML = `
+                        <td>${dateDisplay}</td>
+                        <td>${r.time}</td>
+                        <td>${r.name}</td>
+                        <td>${r.count}名</td>
+                        <td>${r.game}</td>
+                    `;
+                    listBody.appendChild(tr);
+                });
             }
         }
+
+        // 初期表示
+        window.addEventListener('DOMContentLoaded', () => {
+            renderReservations();
+        });
     </script>
 </body>
 </html>
