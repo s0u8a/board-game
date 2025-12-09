@@ -53,9 +53,7 @@
                     <thead>
                         <tr>
                             <th>日付</th>
-                            <th>時間</th>
                             <th>予約者名</th>
-                            <th>人数</th>
                             <th>ゲーム</th>
                         </tr>
                     </thead>
@@ -86,14 +84,15 @@
             return d.toISOString().split('T')[0];
         };
 
+        //サンプルデータ
         const mockReservations = [
-            { date: addDays(0), time: '13:00', name: '山田 太郎', count: 4, game: 'カタン' },
-            { date: addDays(0), time: '18:00', name: '高橋 健太', count: 4, game: 'カタン' },
-            { date: addDays(2), time: '15:00', name: '鈴木 一郎', count: 2, game: 'ドミニオン' },
-            { date: addDays(5), time: '10:00', name: '佐藤 花子', count: 6, game: 'パンデミック' },
-            { date: addDays(-1), time: '14:00', name: '田中 美咲', count: 3, game: 'カルカソンヌ' },
-            { date: addDays(-5), time: '19:00', name: '伊藤 博文', count: 5, game: 'カタン' },
-            { date: addDays(-10), time: '12:00', name: '渡辺 徹', count: 2, game: 'ドミニオン' }
+            { date: addDays(0), name: '山田 太郎', game: 'カタン' },
+            { date: addDays(0), name: '高橋 健太', game: 'カタン' },
+            { date: addDays(2), name: '鈴木 一郎', game: 'ドミニオン' },
+            { date: addDays(5), name: '佐藤 花子', game: 'パンデミック' },
+            { date: addDays(-1), name: '田中 美咲', game: 'カルカソンヌ' },
+            { date: addDays(-5), name: '伊藤 博文', game: 'カタン' },
+            { date: addDays(-10), name: '渡辺 徹', game: 'ドミニオン' }
         ];
 
         let currentTab = 'future'; // 'future' or 'past'
