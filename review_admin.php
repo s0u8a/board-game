@@ -36,7 +36,7 @@
             <!-- タブコンテンツ: 新着順 -->
             <div id="tab-newest" class="tab-content active">
                 <div class="review-list">
-                    <!-- モックデータ 1 -->
+                    <!-- 見本 1 -->
                     <div class="review-card">
                         <div class="review-header">
                             <span class="game-title">カタン</span>
@@ -51,7 +51,7 @@
                             <button class="btn-delete">削除</button>
                         </div>
                     </div>
-                    <!-- モックデータ 2 -->
+                    <!-- 見本 2 -->
                     <div class="review-card">
                         <div class="review-header">
                             <span class="game-title">ドミニオン</span>
