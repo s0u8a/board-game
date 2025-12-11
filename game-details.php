@@ -25,7 +25,7 @@
         <div class="container header-container">
             <div class="logo">
                 <!-- ロゴ（画像がない場合は文字を表示） -->
-                <a href="index.html"
+                <a href="index.php"
                     style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
                     <img src="images/logo.png" alt="Logo" class="logo-img"
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">

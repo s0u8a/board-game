@@ -32,7 +32,7 @@
             <!-- ナビゲーション -->
             <nav class="nav">
                 <!-- 現在ページは active -->
-                <a href="index.html" class="nav-link">ホーム</a>
+                <a href="index.php" class="nav-link">ホーム</a>
                 <a href="game.php" class="nav-link active">ゲーム</a>
                 <a href="reserve.php" class="nav-link">貸出予約</a>
             </nav>
