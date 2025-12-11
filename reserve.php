@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>予約</title>
+    <title>貸出予約 - Board Game Cafe</title>
     <link rel="stylesheet" href="style/reserve_style.css">
 </head>
 
@@ -17,7 +17,7 @@
         <h1>ボードゲームカフェ</h1>
     </header>
     <main>
-        <h1>予約</h1>
+        <h1>貸出予約</h1>
         <div class="reserve_form">
             <form action="#" method="post">
                 <p><label>日時<br><input id="date" type="date" value=""></label></p>
