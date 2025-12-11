@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>予約管理 - Board Game Cafe</title>
     <link rel="stylesheet" href="style/home.css">
-    <link rel="stylesheet" href="style/reserve_admin.css"> <!-- 新規CSS -->
+    <link rel="stylesheet" href="style/reserve_admin.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
                 <div class="logo-text" style="display:none;">管理画面</div>
             </div>
             <nav class="nav">
-                <a href="home.php" class="nav-link">ホームに戻る</a>
+                <a href="home.html" class="nav-link">ホームに戻る</a>
             </nav>
         </div>
     </header>
@@ -33,7 +33,6 @@
                 <button class="tab-btn" onclick="switchTab('past')">過去の予約</button>
             </div>
 
-            <!-- フィルター (ゲームのみ) -->
             <div class="filter-section">
                 <div class="filter-group">
                     <label for="filter-game">ゲームで絞り込み</label>
@@ -47,7 +46,6 @@
                 </div>
             </div>
 
-            <!-- 予約リストテーブル -->
             <div class="reservation-list-container">
                 <table class="reservation-table">
                     <thead>
