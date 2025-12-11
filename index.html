@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8"> <!-- ページの文字コード設定 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- スマホ対応 -->
@@ -13,21 +14,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <!-- ヘッダーエリア -->
     <header class="header">
         <div class="container header-container">
             <div class="logo">
                 <!-- ロゴ画像。失敗時はテキストへ切替 -->
-                <img src="images/logo.png" alt="Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <img src="images/logo.png" alt="Logo" class="logo-img"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                 <div class="logo-text" style="display:none;">🎲 ホーム</div>
             </div>
 
             <!-- ナビゲーションメニュー -->
             <nav class="nav">
-                <a href="#" class="nav-link">ゲーム</a>
+                <a href="game.php" class="nav-link">ゲーム</a>
                 <a href="#" class="nav-link">レビュー</a>
-                <a href="#" class="nav-link">予約管理</a>
+                <a href="reserve.php" class="nav-link">予約管理</a>
             </nav>
 
             <a href="login.php" class="login-btn">ログイン</a> <!-- ログインボタン -->
@@ -87,10 +90,14 @@
 
                 <!-- ゲーム画像4つ。エラー時はプレースホルダー -->
                 <div class="games-grid">
-                    <div class="game-card"><img src="images/game-1.png" alt="Game 1" onerror="this.src='https://placehold.co/300x200?text=Game+1'"></div>
-                    <div class="game-card"><img src="images/game-2.png" alt="Game 2" onerror="this.src='https://placehold.co/300x200?text=Game+2'"></div>
-                    <div class="game-card"><img src="images/game-3.png" alt="Game 3" onerror="this.src='https://placehold.co/300x200?text=Game+3'"></div>
-                    <div class="game-card"><img src="images/game-4.png" alt="Game 4" onerror="this.src='https://placehold.co/300x200?text=Game+4'"></div>
+                    <div class="game-card"><img src="images/game-1.png" alt="Game 1"
+                            onerror="this.src='https://placehold.co/300x200?text=Game+1'"></div>
+                    <div class="game-card"><img src="images/game-2.png" alt="Game 2"
+                            onerror="this.src='https://placehold.co/300x200?text=Game+2'"></div>
+                    <div class="game-card"><img src="images/game-3.png" alt="Game 3"
+                            onerror="this.src='https://placehold.co/300x200?text=Game+3'"></div>
+                    <div class="game-card"><img src="images/game-4.png" alt="Game 4"
+                            onerror="this.src='https://placehold.co/300x200?text=Game+4'"></div>
                 </div>
 
                 <!-- もっと見るボタン -->
@@ -130,5 +137,5 @@
     <!-- JavaScript読み込み -->
     <script src="script/app.js"></script>
 </body>
-</html>
 
+</html>
