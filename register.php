@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <header>
-        <h1>ボードゲームカフェ</h1>
+        <a href="index.php"><h1>ボードゲームカフェ</h1></a>
     </header>
     <main>
         <h1>会員登録</h1>
