@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_email']    = $user['email'];
 
                 // ログイン後に飛ばすページ（home.php や index.php などに合わせて）
-                header('Location: index.html');
+                header('Location: index.php');
                 exit;
             } else {
                  // ログイン失敗
