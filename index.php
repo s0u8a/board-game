@@ -32,7 +32,9 @@
                 <a href="reserve.php" class="nav-link">貸出予約</a>
             </nav>
 
-            <a href="login.php" class="login-btn">ログイン</a> <!-- ログインボタン -->
+            <!-- ログインボタン -->
+            <!-- TODO: ログイン済み => ユーザー名表示 -->
+            <a href="login.php" class="login-btn">ログイン</a> 
         </div>
     </header>
 

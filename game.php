@@ -38,6 +38,7 @@
             </nav>
 
             <!-- ログインボタン -->
+            <!-- TODO: ログイン済み => ユーザー名表示 -->
             <a href="#" class="login-btn">ログイン</a>
         </div>
     </header>
