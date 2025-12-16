@@ -1,83 +1,76 @@
+<?php
+//後に追加
+?>
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
+    <!-- ページの文字コード設定 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- スマホ対応 -->
     <title>Board Game Cafe</title>
+    <!-- タイトル -->
 
-    <!-- 外部CSS読み込み（全体スタイルは style.css に統一） -->
+    <!-- 外部CSS読み込み -->
     <link rel="stylesheet" href="style/home.css">
 
-    <!-- Googleフォントの読み込み -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <!-- ========================= -->
-    <!-- ヘッダー -->
-    <!-- ========================= -->
+    <!-- ヘッダーエリア -->
     <header class="header">
         <div class="container header-container">
             <div class="logo">
-                <!-- ロゴ画像。エラー時は文字ロゴを表示 -->
+                <!-- ロゴ画像。失敗時はテキストへ切替 -->
                 <img src="images/logo.png" alt="Logo" class="logo-img"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                 <div class="logo-text" style="display:none;">🎲 ホーム</div>
             </div>
 
-            <!-- ナビゲーション -->
-              <nav class="nav">
-                <a href="game.php" class="nav-link">ゲーム</a>
-                <a href="reserve.php" class="nav-link">貸出予約</a>
+            <!-- ナビゲーションメニュー -->
+            <nav class="nav">
+                <a href="game.php" class="nav-link active">ゲーム</a>
+                <a href="reserve.php" class="nav-link">貸し出し予約</a>
             </nav>
+            
 
-            <!-- ログインページへ -->
-            <a href="login.php" class="login-btn">ログイン</a>
+            <a href="#" class="login-btn">ログイン</a> <!-- ログインボタン -->
         </div>
     </header>
 
     <main>
-
-        <!-- ========================= -->
-        <!-- ヒーローセクション（トップの大画像エリア） -->
-        <!-- ========================= -->
+        <!-- メインのヒーローセクション -->
         <section class="hero">
             <div class="hero-content">
                 <h1 class="hero-title">ボードゲームカフェOPEN</h1>
 
-                <!-- ヒーロー上の浮遊カード（装飾） -->
+                <!-- 上に重なる統計情報カード -->
                 <div class="hero-stats-overlay">
-
-                    <!-- 貸出ゲーム数カード -->
                     <div class="hero-stat-card rotate-left">
-                        <span class="stat-number">50</span>
+                        <span class="stat-number">50</span> <!-- ゲーム数 -->
                         <span class="stat-label">貸出可能なゲーム</span>
                     </div>
 
-                    <!-- CTAボタン（ゲーム一覧へ） -->
-                    <a href="game.php" class="cta-button">ゲーム一覧を見る</a>
+                    <a href="game.php" class="cta-button">ゲーム一覧を見る</a> <!-- CTAボタン -->
 
-                    <!-- 予約数カード -->
                     <div class="hero-stat-card rotate-right">
-                        <span class="stat-number">5</span>
+                        <span class="stat-number">5</span> <!-- 予約数 -->
                         <span class="stat-label">予約数</span>
                     </div>
 
-                    <!-- レビュー数カード -->
                     <div class="hero-stat-card rotate-right-2">
-                        <span class="stat-number">30</span>
+                        <span class="stat-number">30</span> <!-- レビュー数 -->
                         <span class="stat-label">レビュー数</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ========================= -->
-        <!-- サイト下部の統計表示 -->
-        <!-- ========================= -->
+        <!-- 下部に改めて統計を並べたセクション -->
         <section class="stats-section">
             <div class="container stats-grid">
                 <div class="stat-box">
@@ -95,31 +88,30 @@
             </div>
         </section>
 
-        <!-- ========================= -->
-        <!-- 新着ゲーム（JSで動的に生成） -->
-        <!-- ========================= -->
+        <!-- 新着ゲーム表示 -->
         <section class="new-games">
             <div class="container">
                 <h2 class="section-title">新着ゲーム</h2>
 
-                <!-- 新着ゲームを JS(app.js) で挿入 -->
+                <!-- ゲーム画像（JSで動的生成） -->
                 <div class="games-grid" id="new-games-list">
+                    <!-- ここにJSでゲーム画像が挿入されます -->
                     <p style="grid-column: 1/-1; text-align: center;">読み込み中...</p>
                 </div>
 
+                <!-- もっと見るボタン -->
                 <div class="more-btn-container">
                     <button class="more-btn">もっと見る</button>
                 </div>
             </div>
         </section>
 
-        <!-- ========================= -->
-        <!-- お知らせ -->
-        <!-- ========================= -->
+        <!-- お知らせセクション -->
         <section class="news">
             <div class="container">
                 <h2 class="section-title">お知らせ</h2>
 
+                <!-- 最初のお知らせ -->
                 <div class="news-item">
                     <span class="news-date">2024年4月1日</span>
                     <span class="news-content">ウェブサイトを開設しました。</span>
@@ -128,9 +120,7 @@
         </section>
     </main>
 
-    <!-- ========================= -->
     <!-- フッター -->
-    <!-- ========================= -->
     <footer class="footer">
         <div class="container footer-container">
             <div class="footer-left">
@@ -143,14 +133,8 @@
         </div>
     </footer>
 
-    <!-- ========================= -->
-    <!-- 必要な JS ファイル -->
-    <!-- ========================= -->
-    <!-- ゲームデータ（配列） -->
-    <script src="games-data.js"></script>
-
-    <!-- 新着ゲームや動作を司るJS -->
+    <!-- JavaScript読み込み -->
+    <script src="script/games-data.js"></script>
     <script src="script/app.js"></script>
 </body>
-
 </html>
