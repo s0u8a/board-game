@@ -48,7 +48,7 @@
             <div class="profile-section">
                 <div class="title-section">
                     <h2 class="section-title">アカウント情報</h2>
-                    <p>編集</p>
+                    <p><a href="edit_profile.php">編集</a></p>
                 </div>
                 <div class="profile-info">
                     <div class="profile-label">お名前</div>
