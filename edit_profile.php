@@ -10,19 +10,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // フォームから値を受け取る
     $nickname         = trim($_POST['nickname'] ?? '');
     $email            = trim($_POST['email'] ?? '');
-    $password         = $_POST['password'] ?? '';
-    $password_confirm = $_POST['password_confirm'] ?? '';
     $age              = (int)($_POST['age'] ?? 0);
 
     // 1. 未入力チェック
-    if ($nickname === '' || $email === '' || $password === '' || $password_confirm === '' || $age === 0) {
+    if ($nickname === '' || $email === '' || $age === 0) {
         $error = '未入力の項目があります。';
-    }
-    // 2. パスワード一致チェック
-    elseif ($password !== $password_confirm) {
-        $error = 'パスワードと確認用パスワードが一致していません。';
     } else {
-        // 3. メールアドレス重複チェック
+        // 2. メールアドレス重複チェック
         $sql = 'SELECT id FROM users WHERE email = :email';
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
@@ -32,24 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user) {
             $error = 'このメールアドレスは既に登録されています。';
         } else {
-            // 4. パスワードをハッシュ化
-            $hashed = password_hash($password, PASSWORD_DEFAULT);
-
-            // 5. users テーブルに INSERT
+            // 3. users テーブルに INSERT
             //    nickname → DB の name カラムに入れているのがポイント
             $sql = 'INSERT INTO users (name, email, password, age)
                     VALUES (:name, :email, :password, :age)';
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':name', $nickname, PDO::PARAM_STR);
             $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-            $stmt->bindValue(':password', $hashed, PDO::PARAM_STR);
             $stmt->bindValue(':age', $age, PDO::PARAM_INT); //要修正(年齢->生年月日)
             //日付は YYYY-MM-DD の形式でformから渡されるみたいです
 
             $stmt->execute();
 
-            // 6. 登録完了 → ログイン画面へ
-            header('Location: login.php');
+            // 6. 変更完了 → マイページへ
+            header('Location: mypage.php');
             exit;
         }
     }

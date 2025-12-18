@@ -1,10 +1,5 @@
 <?php
-// 本来はここでセッション開始とログインチェックを行う
-// session_start();
-// if (!isset($_SESSION['user_id'])) {
-//     header('Location: login.php');
-//     exit;
-// }
+// ここでセッション開始とログインチェックを行う
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -13,7 +8,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>マイページ - Board Game Cafe</title>
-    <!-- game.phpのデザインをベースにするため読み込み -->
     <link rel="stylesheet" href="style/game.css">
     <link rel="stylesheet" href="style/mypage_style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,7 +30,7 @@
                 <a href="reserve.php" class="nav-link">貸し出し予約</a>
             </nav>
             <!-- ログアウトリンク（後で実装） -->
-            <a href="login.php" class="login-btn">ログアウト</a>
+            <a href="index.php" class="login-btn">ログアウト</a>
         </div>
     </header>
 
@@ -50,6 +44,7 @@
                     <h2 class="section-title">アカウント情報</h2>
                     <p><a href="edit_profile.php">編集</a></p>
                 </div>
+
                 <div class="profile-info">
                     <div class="profile-label">お名前</div>
                     <div class="profile-value">山田 太郎</div>
@@ -73,6 +68,7 @@
                             <th>状況</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <tr>
                             <td>2025/12/20</td>
