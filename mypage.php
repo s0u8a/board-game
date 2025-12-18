@@ -28,7 +28,7 @@
                 <img src="images/logo.png" alt="Logo" class="logo-img"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                 <div class="logo-text" style="display:none;">🎲</div>
-                <span class="logo-label">Board Game Cafe</span>
+                <span class="logo-label">マイページ</span>
             </div>
             <nav class="nav">
                 <a href="index.php" class="nav-link">ホーム</a>
