@@ -27,9 +27,9 @@
                     <span class="logo-label">ホーム</span>
                 </a>
             </div>
-              <nav class="nav">
-                <a href="index.html" class="nav-link">ホーム</a>
-                <a href="reserve.html" class="nav-link">貸し出し予約</a>
+            <nav class="nav">
+                <a href="index.php" class="nav-link">ホーム</a>
+                <a href="reserve.php" class="nav-link">貸し出し予約</a>
             </nav>
             <a href="#" class="login-btn">ログイン</a>
         </div>
