@@ -10,6 +10,15 @@ function json_response($ok, $data = [], $code = 200)
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    json_response(false, ['error' => 'POSTのみ許可されています'], 405);
+}
+
+$csrfToken = $_POST['csrf_token'] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? '');
+if (!verify_csrf_token($csrfToken)) {
+    json_response(false, ['error' => '不正なリクエストです'], 403);
+}
+
 $action = $_POST['action'] ?? '';
 
 if ($action === 'start') {

@@ -10,7 +10,7 @@ function respond($ok, $payload = [], $code = 200)
     exit;
 }
 
-// レビュー一覧（GET）
+// レビュー取得（GET）
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $gameId = (int)($_GET['game_id'] ?? 0);
     if ($gameId <= 0) {
@@ -26,17 +26,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 
-// 以降はPOSTアクション
+// 以降はPOSTのみ
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    respond(false, ['error' => '不正なリクエストです'], 400);
+    respond(false, ['error' => '許可されていないメソッドです'], 405);
+}
+
+$csrfToken = $_POST['csrf_token'] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? '');
+if (!verify_csrf_token($csrfToken)) {
+    respond(false, ['error' => '不正なリクエストです'], 403);
 }
 
 $action = $_POST['action'] ?? '';
 
-// レビュー投稿
+// レビュー作成
 if ($action === 'create') {
     if (!isset($_SESSION['user_id'])) {
-        respond(false, ['error' => 'ログインが必要です'], 401);
+        respond(false, ['error' => 'ログインしてください'], 401);
     }
     $userId  = (int)$_SESSION['user_id'];
     $gameId  = (int)($_POST['game_id'] ?? 0);
@@ -47,10 +52,13 @@ if ($action === 'create') {
         respond(false, ['error' => 'game_id を指定してください'], 400);
     }
     if ($rating < 1 || $rating > 5) {
-        respond(false, ['error' => 'rating は 1〜5 の整数で指定してください'], 400);
+        respond(false, ['error' => 'rating は 1〜5 で入力してください'], 400);
     }
     if ($comment === '') {
         respond(false, ['error' => 'コメントを入力してください'], 400);
+    }
+    if (mb_strlen($comment) > 1000) {
+        respond(false, ['error' => 'コメントは1000文字以内で入力してください'], 400);
     }
 
     try {
@@ -70,7 +78,7 @@ if ($action === 'create') {
 // レビュー削除
 if ($action === 'delete') {
     if (!isset($_SESSION['user_id'])) {
-        respond(false, ['error' => 'ログインが必要です'], 401);
+        respond(false, ['error' => 'ログインしてください'], 401);
     }
     $reviewId = (int)($_POST['review_id'] ?? 0);
     $userId   = (int)$_SESSION['user_id'];

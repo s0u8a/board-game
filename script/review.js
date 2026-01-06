@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+ï»¿document.addEventListener('DOMContentLoaded', () => {
     console.log('Review script loaded');
 
     const reviewsList = document.getElementById('reviewsList');
@@ -6,16 +6,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const reviewInput = document.getElementById('reviewInput');
     const starBtns = document.querySelectorAll('.star-btn');
     let currentRating = 0;
+
     const gameId = getGameIdFromUrl();
+    const initialCsrfToken = getCsrfToken();
 
     function getGameIdFromUrl() {
         const params = new URLSearchParams(window.location.search);
         return parseInt(params.get('id'), 10);
     }
 
+    function getCsrfToken() {
+        const meta = document.querySelector('meta[name="csrf-token"]');
+        return meta ? meta.getAttribute('content') : '';
+    }
+
     function updateStars(value) {
         starBtns.forEach(btn => {
-            const btnValue = parseInt(btn.dataset.value);
+            const btnValue = parseInt(btn.dataset.value, 10);
             if (btnValue <= value) {
                 btn.style.color = '#ffa500';
             } else {
@@ -26,12 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadReviews() {
         if (!reviewsList || !gameId) return;
-        reviewsList.innerHTML = '<p class="no-reviews">“Ç‚İ‚İ’†...</p>';
+        reviewsList.innerHTML = '<p class="no-reviews">èª­ã¿è¾¼ã¿ä¸­...</p>';
         try {
             const res = await fetch(`reviews_api.php?game_id=${gameId}`);
             const data = await res.json();
             if (!data.ok || !Array.isArray(data.reviews)) {
-                throw new Error(data.error || 'ƒŒƒrƒ…[æ“¾‚É¸”s‚µ‚Ü‚µ‚½');
+                throw new Error(data.error || 'ãƒ¬ãƒ“ãƒ¥ãƒ¼å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ');
             }
             renderReviews(data.reviews);
         } catch (err) {
@@ -43,14 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!reviewsList) return;
         reviewsList.innerHTML = '';
         if (!list || list.length === 0) {
-            reviewsList.innerHTML = '<p class="no-reviews">‚Ü‚¾ƒŒƒrƒ…[‚Í‚ ‚è‚Ü‚¹‚ñB</p>';
+            reviewsList.innerHTML = '<p class="no-reviews">ã¾ã ãƒ¬ãƒ“ãƒ¥ãƒ¼ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</p>';
             return;
         }
         list.forEach(r => {
             const item = document.createElement('div');
             item.className = 'review-item';
-            const safeName = r.user_name || 'ƒ†[ƒU[';
-            const stars = 'š'.repeat(Math.max(1, Math.min(5, parseInt(r.rating, 10) || 0)));
+            const safeName = r.user_name || 'ãƒ¦ãƒ¼ã‚¶ãƒ¼';
+            const stars = 'â˜…'.repeat(Math.max(1, Math.min(5, parseInt(r.rating, 10) || 0)));
             item.innerHTML = `
                 <div class="review-header">
                     <span class="review-author">${safeName}</span>
@@ -65,13 +72,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function submitReview() {
-        const text = reviewInput.value;
+        const text = reviewInput.value.trim();
         if (!text || currentRating === 0) {
-            alert('•]‰¿‚ÆƒRƒƒ“ƒg‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢');
+            alert('è©•ä¾¡ã¨ã‚³ãƒ¡ãƒ³ãƒˆã‚’å…¥åŠ›ã—ã¦ãã ã•ã„');
             return;
         }
         if (!gameId) {
-            alert('ƒQ[ƒ€ID‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½');
+            alert('ã‚²ãƒ¼ãƒ IDãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ');
+            return;
+        }
+        const token = initialCsrfToken || getCsrfToken();
+        if (!token) {
+            alert('CSRFãƒˆãƒ¼ã‚¯ãƒ³ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ');
             return;
         }
         try {
@@ -80,19 +92,23 @@ document.addEventListener('DOMContentLoaded', () => {
             form.append('game_id', gameId);
             form.append('rating', currentRating);
             form.append('comment', text);
+            form.append('csrf_token', token);
             const res = await fetch('reviews_api.php', {
                 method: 'POST',
                 body: form,
+                headers: {
+                    'X-CSRF-Token': token,
+                },
             });
             const data = await res.json();
             if (!data.ok) {
-                throw new Error(data.error || '“Še‚É¸”s‚µ‚Ü‚µ‚½');
+                throw new Error(data.error || 'æŠ•ç¨¿ã«å¤±æ•—ã—ã¾ã—ãŸ');
             }
             reviewInput.value = '';
             currentRating = 0;
             updateStars(0);
             await loadReviews();
-            alert('ƒŒƒrƒ…[‚ğ“Še‚µ‚Ü‚µ‚½');
+            alert('ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’æŠ•ç¨¿ã—ã¾ã—ãŸ');
         } catch (err) {
             alert(err.message);
         }
@@ -101,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (starBtns) {
         starBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const value = parseInt(e.target.dataset.value);
+                const value = parseInt(e.target.dataset.value, 10);
                 currentRating = value;
                 updateStars(value);
             });
