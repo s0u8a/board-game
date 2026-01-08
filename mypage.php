@@ -134,7 +134,8 @@ try {
                                     </td>
                                     <td>
                                         <?php if ($res['status'] === 'reserved'): ?>
-                                            <button class="cancel-reservation-btn delete-btn" data-id="<?php echo $res['id']; ?>"
+                                            <button class="cancel-reservation-btn delete-btn" 
+                                                data-id="<?php echo $res['id']; ?>"
                                                 data-csrf="<?php echo csrf_token(); ?>">
                                                 キャンセル
                                             </button>
@@ -150,8 +151,19 @@ try {
             </div>
         </div>
     </main>
-
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-left">
+                <p class="footer-label">Board Game Cafe</p>
+            </div>
+            <div class="footer-right">
+                <p>住所：東京都新宿区新宿 1-1-1</p>
+                <p>営業時間：10:00〜20:00</p>
+            </div>
+        </div>
+    </footer>
     <script src="script/mypage.js"></script>
+
 </body>
 
 </html>

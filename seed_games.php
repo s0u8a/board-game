@@ -10,7 +10,7 @@ $gamesData = [
         'description' => '魔法のパン屋さんで、一番の魔法パン職人を目指そう！可愛い見た目とは裏腹に、戦略的な駆け引きが楽しめるゲームです。',
         'players' => '2〜4人',
         'play_time' => '30分',
-        'difficulty' => '普通', // JSにはないので仮置き
+        'difficulty' => '普通',
         'min_players' => 2,
         'max_players' => 4
     ],
@@ -108,7 +108,6 @@ $gamesData = [
         'genre' => 'party',
         'description' => 'ハッタリ決めれば勝ったも同然！ダイスを使った心理戦ゲーム。全員のダイスの出目を予想して、自分の嘘を通し抜け！',
         'players' => '2〜6人',
-        'playtime' => '30分', // データによってキー名が揺れてたので補正
         'play_time' => '30分',
         'difficulty' => '普通',
         'min_players' => 2,
