@@ -97,7 +97,7 @@
                 <a href="game.php" class="nav-link">ゲーム一覧</a>
                 <a href="reservation_status.php" class="nav-link active">予約状況</a>
             </nav>
-            <a href="#" class="login-btn">ログイン</a>
+            <a href="mypage.php" class="login-btn">マイページ</a>
         </div>
     </header>
 
