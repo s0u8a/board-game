@@ -1,7 +1,38 @@
 <?php
 require_once __DIR__ . '/admin_check.php';
+$gameTitles = [];
+try {
+    $stmt = $pdo->query('SELECT DISTINCT title FROM games ORDER BY title ASC');
+    $gameTitles = $stmt->fetchAll(PDO::FETCH_COLUMN);
+} catch (PDOException $e) {
+    $gameTitles = [];
+}
 
 
+
+$reservationRows = [];
+$reservationData = [];
+try {
+    $stmt = $pdo->query("
+        SELECT r.reservation_date, u.name AS user_name, g.title AS game_title, r.status
+        FROM reservations r
+        JOIN users u ON r.user_id = u.id
+        JOIN games g ON r.game_id = g.id
+        WHERE r.status <> 'cancelled'
+        ORDER BY r.reservation_date ASC, r.id ASC
+    ");
+    $reservationRows = $stmt->fetchAll();
+} catch (PDOException $e) {
+    $reservationRows = [];
+}
+
+foreach ($reservationRows as $row) {
+    $reservationData[] = [
+        'date' => $row['reservation_date'],
+        'name' => $row['user_name'],
+        'game' => $row['game_title'],
+    ];
+}
 ?>
 
 
@@ -45,10 +76,11 @@ require_once __DIR__ . '/admin_check.php';
                     <label for="filter-game">ゲームで絞り込み</label>
                     <select id="filter-game" onchange="renderReservations()">
                         <option value="">すべて</option>
-                        <option value="カタン">カタン</option>
-                        <option value="ドミニオン">ドミニオン</option>
-                        <option value="カルカソンヌ">カルカソンヌ</option>
-                        <option value="パンデミック">パンデミック</option>
+                        <?php foreach ($gameTitles as $gameTitle): ?>
+                            <option value="<?php echo htmlspecialchars($gameTitle, ENT_QUOTES, 'UTF-8'); ?>">
+                                <?php echo htmlspecialchars($gameTitle, ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -78,27 +110,7 @@ require_once __DIR__ . '/admin_check.php';
     </footer>
 
     <script>
-        // モックデータ (日付はYYYY-MM-DD形式で管理)
-        // 動作確認のため、現在日付前後のデータを適当に用意
-        const todayStr = new Date().toISOString().split('T')[0];
-        
-        // 過去の日付生成用ヘルパー
-        const addDays = (days) => {
-            const d = new Date();
-            d.setDate(d.getDate() + days);
-            return d.toISOString().split('T')[0];
-        };
-
-        //サンプルデータ
-        const mockReservations = [
-            { date: addDays(0), name: '山田 太郎', game: 'カタン' },
-            { date: addDays(0), name: '高橋 健太', game: 'カタン' },
-            { date: addDays(2), name: '鈴木 一郎', game: 'ドミニオン' },
-            { date: addDays(5), name: '佐藤 花子', game: 'パンデミック' },
-            { date: addDays(-1), name: '田中 美咲', game: 'カルカソンヌ' },
-            { date: addDays(-5), name: '伊藤 博文', game: 'カタン' },
-            { date: addDays(-10), name: '渡辺 徹', game: 'ドミニオン' }
-        ];
+        const reservations = <?php echo json_encode($reservationData, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 
         let currentTab = 'future'; // 'future' or 'past'
 
@@ -122,7 +134,7 @@ require_once __DIR__ . '/admin_check.php';
             const today = new Date().toISOString().split('T')[0];
 
             // データの振り分け
-            let filtered = mockReservations.filter(r => {
+            let filtered = reservations.filter(r => {
                 // ゲームフィルタ
                 if (gameFilter && r.game !== gameFilter) return false;
                 

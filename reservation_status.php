@@ -104,25 +104,7 @@
     <main class="container status-container">
         <h1 class="section-title">予約状況一覧</h1>
 
-        <!-- Mock Data -->
-        <div class="status-card">
-            <div class="status-info">
-                <h3>カタン</h3>
-                <p class="status-date">予約日: 2024年12月20日 14:00〜</p>
-                <p>人数: 4人</p>
-            </div>
-            <span class="status-badge">予約確定</span>
-        </div>
-
-        <div class="status-card">
-            <div class="status-info">
-                <h3>ドミニオン</h3>
-                <p class="status-date">予約日: 2024年12月25日 13:00〜</p>
-                <p>人数: 2人</p>
-            </div>
-            <span class="status-badge">審査中</span>
-        </div>
-
+        <div class="no-reservation">表示する予約はありません。</div>
 
     </main>
 
