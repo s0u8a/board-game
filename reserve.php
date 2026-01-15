@@ -110,8 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <header>
+        <div class="header-container">
         <a href="index.php"><h1>ボードゲームカフェ</h1></a>
-        <a href="index.php" class="header-link">&#x30DB;&#x30FC;&#x30E0;&#x306B;&#x623B;&#x308B;</a>
+
+            <nav class="nav">
+                <a href="index.php" class="nav-link">ホームに戻る</a>
+            </nav>
+        </div>
     </header>
     <main>
         <h1>貸出予約</h1>
