@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/auth_check.php';
 
-$userId = (int)($_SESSION['user_id'] ?? 0);
+$userId = (int) ($_SESSION['user_id'] ?? 0);
 $reservations = [];
 
 try {
@@ -126,6 +126,7 @@ try {
                 <a href="index.php" class="nav-link">ホーム</a>
                 <a href="game.php" class="nav-link">ゲーム一覧</a>
                 <a href="reservation_status.php" class="nav-link active">予約状況</a>
+                <a href="price.php" class="nav-link">ご利用料金</a>
             </nav>
             <a href="mypage.php" class="login-btn">マイページ</a>
         </div>
@@ -135,7 +136,9 @@ try {
         <h1 class="section-title">&#x4E88;&#x7D04;&#x72B6;&#x6CC1;&#x4E00;&#x89A7;</h1>
 
         <?php if (count($reservations) === 0): ?>
-            <div class="no-reservation">&#x8868;&#x793A;&#x3059;&#x308B;&#x4E88;&#x7D04;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;</div>
+            <div class="no-reservation">
+                &#x8868;&#x793A;&#x3059;&#x308B;&#x4E88;&#x7D04;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+            </div>
         <?php else: ?>
             <?php foreach ($reservations as $reservation): ?>
                 <?php
@@ -149,13 +152,14 @@ try {
                     $badgeClass = 'status-badge status-cancelled';
                     $badgeLabel = '&#x30AD;&#x30E3;&#x30F3;&#x30BB;&#x30EB;';
                 }
-                $displayDate = str_replace('-', '/', (string)($reservation['reservation_date'] ?? ''));
-                $partySize = (int)($reservation['party_size'] ?? 0);
+                $displayDate = str_replace('-', '/', (string) ($reservation['reservation_date'] ?? ''));
+                $partySize = (int) ($reservation['party_size'] ?? 0);
                 ?>
                 <div class="status-card">
                     <div class="status-info">
                         <h3><?php echo htmlspecialchars($reservation['game_title'] ?? '', ENT_QUOTES, 'UTF-8'); ?></h3>
-                        <p class="status-date">&#x4E88;&#x7D04;&#x65E5;: <?php echo htmlspecialchars($displayDate, ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p class="status-date">&#x4E88;&#x7D04;&#x65E5;:
+                            <?php echo htmlspecialchars($displayDate, ENT_QUOTES, 'UTF-8'); ?></p>
                         <p>&#x4EBA;&#x6570;: <?php echo $partySize; ?>&#x4EBA;</p>
                     </div>
                     <span class="<?php echo $badgeClass; ?>"><?php echo $badgeLabel; ?></span>

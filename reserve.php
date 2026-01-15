@@ -113,10 +113,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <header>
         <div class="header-container">
-        <a href="index.php"><h1>ボードゲームカフェ</h1></a>
+            <a href="index.php">
+                <h1>ボードゲームカフェ</h1>
+            </a>
 
             <nav class="nav">
                 <a href="index.php" class="nav-link">ホームに戻る</a>
+                <a href="price.php" class="nav-link">ご利用料金</a>
             </nav>
         </div>
     </header>
@@ -140,43 +143,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="hidden" name="csrf_token"
                     value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
                 <p><label>日付<br><input name="date" id="date" type="date" value=""></label></p>
-                <p><label>プレイ人数<br><input name="party_size" type="number" value="<?php echo htmlspecialchars((string)($partySize ?? 1), ENT_QUOTES, 'UTF-8'); ?>" min="1" max="20"></label></p>
+                <p><label>プレイ人数<br><input name="party_size" type="number"
+                            value="<?php echo htmlspecialchars((string) ($partySize ?? 1), ENT_QUOTES, 'UTF-8'); ?>"
+                            min="1" max="20"></label></p>
                 <?php if (empty($games)): ?>
                     <p class="empty-message">表示できるゲームがありません。</p>
                 <?php else: ?>
                     <p><label>ゲーム<br>
-                        <select name="game_id" id="game-select" required>
-                            <option value="">選択してください</option>
-                            <?php foreach ($games as $game): ?>
-                                <?php
-                                $minPlayers = isset($game['min_players']) ? (int)$game['min_players'] : 0;
-                                $maxPlayers = isset($game['max_players']) ? (int)$game['max_players'] : 0;
-                                $metaParts = [];
-                                if ($minPlayers > 0 && $maxPlayers > 0) {
-                                    $metaParts[] = ($minPlayers === $maxPlayers) ? $minPlayers . '人' : $minPlayers . '-' . $maxPlayers . '人';
-                                } elseif ($minPlayers > 0) {
-                                    $metaParts[] = $minPlayers . '人以上';
-                                } elseif ($maxPlayers > 0) {
-                                    $metaParts[] = $maxPlayers . '人まで';
-                                }
-                                if (!empty($game['play_time'])) {
-                                    $metaParts[] = $game['play_time'];
-                                }
-                                $metaLabel = $metaParts ? implode(' / ', $metaParts) : '';
-                                $genreLabel = !empty($game['genre']) ? (string)$game['genre'] : '';
-                                $imageUrl = !empty($game['image_url']) ? (string)$game['image_url'] : '';
-                                $optionLabel = $game['title'] . ($metaLabel !== '' ? '（' . $metaLabel . '）' : '');
-                                ?>
-                                <option value="<?php echo htmlspecialchars((string)$game['id'], ENT_QUOTES, 'UTF-8'); ?>"
-                                    data-image="<?php echo htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8'); ?>"
-                                    data-title="<?php echo htmlspecialchars($game['title'], ENT_QUOTES, 'UTF-8'); ?>"
-                                    data-meta="<?php echo htmlspecialchars($metaLabel, ENT_QUOTES, 'UTF-8'); ?>"
-                                    data-genre="<?php echo htmlspecialchars($genreLabel, ENT_QUOTES, 'UTF-8'); ?>"<?php echo ((int)$gameId === (int)$game['id']) ? ' selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($optionLabel, ENT_QUOTES, 'UTF-8'); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </label></p>
+                            <select name="game_id" id="game-select" required>
+                                <option value="">選択してください</option>
+                                <?php foreach ($games as $game): ?>
+                                    <?php
+                                    $minPlayers = isset($game['min_players']) ? (int) $game['min_players'] : 0;
+                                    $maxPlayers = isset($game['max_players']) ? (int) $game['max_players'] : 0;
+                                    $metaParts = [];
+                                    if ($minPlayers > 0 && $maxPlayers > 0) {
+                                        $metaParts[] = ($minPlayers === $maxPlayers) ? $minPlayers . '人' : $minPlayers . '-' . $maxPlayers . '人';
+                                    } elseif ($minPlayers > 0) {
+                                        $metaParts[] = $minPlayers . '人以上';
+                                    } elseif ($maxPlayers > 0) {
+                                        $metaParts[] = $maxPlayers . '人まで';
+                                    }
+                                    if (!empty($game['play_time'])) {
+                                        $metaParts[] = $game['play_time'];
+                                    }
+                                    $metaLabel = $metaParts ? implode(' / ', $metaParts) : '';
+                                    $genreLabel = !empty($game['genre']) ? (string) $game['genre'] : '';
+                                    $imageUrl = !empty($game['image_url']) ? (string) $game['image_url'] : '';
+                                    $optionLabel = $game['title'] . ($metaLabel !== '' ? '（' . $metaLabel . '）' : '');
+                                    ?>
+                                    <option value="<?php echo htmlspecialchars((string) $game['id'], ENT_QUOTES, 'UTF-8'); ?>"
+                                        data-image="<?php echo htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8'); ?>"
+                                        data-title="<?php echo htmlspecialchars($game['title'], ENT_QUOTES, 'UTF-8'); ?>"
+                                        data-meta="<?php echo htmlspecialchars($metaLabel, ENT_QUOTES, 'UTF-8'); ?>"
+                                        data-genre="<?php echo htmlspecialchars($genreLabel, ENT_QUOTES, 'UTF-8'); ?>" <?php echo ((int) $gameId === (int) $game['id']) ? ' selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($optionLabel, ENT_QUOTES, 'UTF-8'); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </label></p>
                     <div class="game-preview" id="game-preview">
                         <div class="preview-media">
                             <img id="game-preview-image" src="" alt="" width="120" height="120" hidden>

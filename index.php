@@ -51,13 +51,14 @@ try {
             <nav class="nav">
                 <a href="game.php" class="nav-link active">ゲーム</a>
                 <a href="reserve.php" class="nav-link">貸し出し予約</a>
-                <?php if (isset($_SESSION['is_admin']) && (int)$_SESSION['is_admin'] === 1): ?>
+                <a href="price.php" class="nav-link">ご利用料金</a>
+                <?php if (isset($_SESSION['is_admin']) && (int) $_SESSION['is_admin'] === 1): ?>
                     <a href="game_admin.php" class="nav-link">管理(ゲーム)</a>
                     <a href="reserve_admin.php" class="nav-link">管理(予約)</a>
                     <a href="review_admin.php" class="nav-link">管理(レビュー)</a>
                 <?php endif; ?>
             </nav>
-            
+
             <?php
             if (isset($_SESSION['user_id'])) {
                 $stmt = $pdo->prepare('SELECT name FROM users WHERE id = :id');
@@ -68,7 +69,7 @@ try {
                 echo '<a href="login.php" class="login-btn">ログイン</a>';
             }
             ?>
-            
+
         </div>
     </header>
 

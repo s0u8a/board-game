@@ -32,6 +32,7 @@ require_once __DIR__ . '/auth_check.php';
             <nav class="nav">
                 <a href="index.php" class="nav-link">ホーム</a>
                 <a href="reserve.php" class="nav-link">貸し出し予約</a>
+                <a href="price.php" class="nav-link">ご利用料金</a>
                 <?php if (isset($_SESSION['is_admin']) && (int) $_SESSION['is_admin'] === 1): ?>
                     <a href="game_admin.php" class="nav-link">管理(ゲーム)</a>
                     <a href="reserve_admin.php" class="nav-link">管理(予約)</a>
