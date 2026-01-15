@@ -44,6 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Attach event listener immediately if button exists
+    // Update reserve button link
+    const reserveBtn = document.querySelector('.reserve-btn');
+    if (reserveBtn) {
+        reserveBtn.href = `reserve.php?game_id=${gameId}`;
+    }
+
     async function loadGame() {
         try {
             const res = await fetch(`games_api.php?id=${gameId}`);
@@ -66,13 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const statusEl = document.getElementById('details-status');
         const descEl = document.getElementById('details-desc');
         const metaListEl = document.getElementById('details-meta-list');
-        const reserveBtn = document.querySelector('.reserve-btn');
 
-        if (reserveBtn) {
-            reserveBtn.addEventListener('click', () => {
-                window.location.href = `reserve.php?game_id=${gameId}`;
-            });
-        }
+        // Removed reserveBtn logic from here as it is now at the top level
 
         if (titleEl) titleEl.textContent = game.title;
         if (imgEl) {

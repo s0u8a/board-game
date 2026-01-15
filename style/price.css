@@ -1,0 +1,121 @@
+.price-container {
+    padding-top: 40px;
+    padding-bottom: 60px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.price-container h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.price-section {
+    margin-bottom: 50px;
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.price-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.price-section h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    color: #444;
+}
+
+/* Rules List */
+.rules-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+.rules-list li {
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+/* Tables */
+.price-table,
+.menu-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.price-table td,
+.menu-table td {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.price-table tr:last-child td,
+.menu-table tr:last-child td {
+    border-bottom: none;
+}
+
+.price-table td:last-child,
+.menu-table td:last-child {
+    text-align: right;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Discount Section */
+.discount-item {
+    margin-bottom: 30px;
+}
+
+.discount-item:last-child {
+    margin-bottom: 0;
+}
+
+.discount-item p {
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Notes */
+.attention-text {
+    font-weight: 700;
+    color: #cc0000;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.small-note {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .price-container {
+        padding: 20px;
+    }
+
+    .price-section {
+        padding: 20px;
+    }
+
+    .price-table td,
+    .menu-table td {
+        font-size: 0.95rem;
+    }
+}

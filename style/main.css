@@ -176,6 +176,7 @@ body {
 }
 
 .reserve-btn {
+    display: inline-block;
     background-color: #3b71ca;
     color: white;
     border: none;
@@ -186,6 +187,8 @@ body {
     font-size: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.2s;
+    text-decoration: none;
+    text-align: center;
 }
 
 .reserve-btn:hover {

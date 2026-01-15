@@ -67,6 +67,7 @@ try {
                 <a href="index.php" class="nav-link">ホーム</a>
                 <a href="game.php" class="nav-link">ゲーム一覧</a>
                 <a href="reservation_status.php" class="nav-link">予約状況</a>
+                <a href="price.php" class="nav-link">ご利用料金</a>
             </nav>
             <a href="logout.php" class="login-btn">ログアウト</a>
         </div>
@@ -134,8 +135,7 @@ try {
                                     </td>
                                     <td>
                                         <?php if ($res['status'] === 'reserved'): ?>
-                                            <button class="cancel-reservation-btn delete-btn" 
-                                                data-id="<?php echo $res['id']; ?>"
+                                            <button class="cancel-reservation-btn delete-btn" data-id="<?php echo $res['id']; ?>"
                                                 data-csrf="<?php echo csrf_token(); ?>">
                                                 キャンセル
                                             </button>
