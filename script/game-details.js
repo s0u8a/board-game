@@ -45,12 +45,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Attach event listener immediately if button exists
+    // Update reserve button link
     const reserveBtn = document.querySelector('.reserve-btn');
     if (reserveBtn) {
-        reserveBtn.addEventListener('click', () => {
-            console.log('Reserve button clicked', gameId);
-            window.location.href = `reserve.php?game_id=${gameId}`;
-        });
+        reserveBtn.href = `reserve.php?game_id=${gameId}`;
     }
 
     async function loadGame() {
