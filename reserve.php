@@ -1,17 +1,17 @@
 <?php
 require_once __DIR__ . '/auth_check.php';
 
-$errors  = [];
+$errors = [];
 $success = '';
-$gameId = '';
+$gameId = isset($_GET['game_id']) ? (int) $_GET['game_id'] : '';
 $dateInput = '';
 $partySize = 1;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userId     = (int)($_SESSION['user_id'] ?? 0);
-    $gameId     = (int)($_POST['game_id'] ?? 0);
-    $dateInput  = trim($_POST['date'] ?? '');
-    $partySize  = (int)($_POST['party_size'] ?? 1);
+    $userId = (int) ($_SESSION['user_id'] ?? 0);
+    $gameId = (int) ($_POST['game_id'] ?? 0);
+    $dateInput = trim($_POST['date'] ?? '');
+    $partySize = (int) ($_POST['party_size'] ?? 1);
     $csrf_token = $_POST['csrf_token'] ?? '';
 
     if (!verify_csrf_token($csrf_token)) {
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($dateInput === '') {
         $errors[] = '日付を入力してください。';
     } else {
-        $dateObj    = DateTime::createFromFormat('Y-m-d', $dateInput);
+        $dateObj = DateTime::createFromFormat('Y-m-d', $dateInput);
         $dateErrors = DateTime::getLastErrors();
         if ($dateObj === false || ($dateErrors['warning_count'] ?? 0) > 0 || ($dateErrors['error_count'] ?? 0) > 0) {
             $errors[] = '日付の形式が正しくありません。';
@@ -47,11 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // 同一ユーザー・同一ゲーム・同一日付の重複チェック
             $dupStmt = $pdo->prepare('SELECT COUNT(*) FROM reservations WHERE user_id = :uid AND game_id = :gid AND reservation_date = :rdate');
             $dupStmt->execute([
-                ':uid'   => $userId,
-                ':gid'   => $gameId,
+                ':uid' => $userId,
+                ':gid' => $gameId,
                 ':rdate' => $dateInput,
             ]);
-            $dupCount = (int)$dupStmt->fetchColumn();
+            $dupCount = (int) $dupStmt->fetchColumn();
             if ($dupCount > 0) {
                 $errors[] = '同じ日付・同じゲームの予約が既に存在します。';
             }
@@ -65,11 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $stmt = $pdo->prepare('INSERT INTO reservations (user_id, game_id, reservation_date, party_size, status) VALUES (:uid, :gid, :rdate, :party_size, :status)');
             $stmt->execute([
-                ':uid'        => $userId,
-                ':gid'        => $gameId,
-                ':rdate'      => $dateInput,
+                ':uid' => $userId,
+                ':gid' => $gameId,
+                ':rdate' => $dateInput,
                 ':party_size' => $partySize,
-                ':status'     => 'reserved',
+                ':status' => 'reserved',
             ]);
             $success = '予約を登録しました。';
         } catch (PDOException $e) {
@@ -81,15 +81,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>貸出予約 - Board Game Cafe</title>
     <link rel="stylesheet" href="style/reserve_style.css">
 </head>
+
 <body>
     <header>
-        <a href="index.php"><h1>ボードゲームカフェ</h1></a>
+        <a href="index.php">
+            <h1>ボードゲームカフェ</h1>
+        </a>
     </header>
     <main>
         <h1>貸出予約</h1>
@@ -108,10 +112,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="reserve_form">
             <form action="reserve.php" method="post">
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="hidden" name="csrf_token"
+                    value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
                 <p><label>日付<br><input name="date" id="date" type="date" value=""></label></p>
-                <p><label>人数<br><input name="party_size" type="number" value="<?php echo htmlspecialchars((string)($partySize ?? 1), ENT_QUOTES, 'UTF-8'); ?>" min="1" max="20"></label></p>
-                <p><label>ゲームID<br><input name="game_id" class="game_name" type="number" value="<?php echo htmlspecialchars((string)($gameId ?? ''), ENT_QUOTES, 'UTF-8'); ?>" min="1"></label></p>
+                <p><label>人数<br><input name="party_size" type="number"
+                            value="<?php echo htmlspecialchars((string) ($partySize ?? 1), ENT_QUOTES, 'UTF-8'); ?>"
+                            min="1" max="20"></label></p>
+                <p><label>ゲームID<br><input name="game_id" class="game_name" type="number"
+                            value="<?php echo htmlspecialchars((string) ($gameId ?? ''), ENT_QUOTES, 'UTF-8'); ?>"
+                            min="1"></label></p>
                 <button type="submit">予約する</button>
             </form>
             <script>
@@ -141,4 +150,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>© 2025 ボードゲームカフェ</p>
     </footer>
 </body>
+
 </html>
