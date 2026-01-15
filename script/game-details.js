@@ -66,6 +66,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const statusEl = document.getElementById('details-status');
         const descEl = document.getElementById('details-desc');
         const metaListEl = document.getElementById('details-meta-list');
+        const reserveBtn = document.querySelector('.reserve-btn');
+
+        if (reserveBtn) {
+            reserveBtn.addEventListener('click', () => {
+                window.location.href = `reserve.php?game_id=${gameId}`;
+            });
+        }
 
         if (titleEl) titleEl.textContent = game.title;
         if (imgEl) {
