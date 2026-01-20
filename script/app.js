@@ -5,6 +5,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== 新着ゲーム表示エリア =====
     const newGamesContainer = document.getElementById('new-games-list');
 
+    function parseImageList(value) {
+        if (!value) return [];
+        if (Array.isArray(value)) {
+            return value
+                .map((item) => String(item || '').trim())
+                .filter(Boolean);
+        }
+        const raw = String(value).trim();
+        if (!raw) return [];
+        if (raw.startsWith('[')) {
+            try {
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed)) {
+                    return parsed
+                        .map((item) => String(item || '').trim())
+                        .filter(Boolean);
+                }
+            } catch (err) {
+            }
+        }
+        return raw
+            .split(/[\n,]+/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+    }
+
+    function getPrimaryImage(value) {
+        const images = parseImageList(value);
+        return images[0] || '';
+    }
+
     // ===== ゲーム一覧をAPIから取得 =====
     async function loadGames() {
         if (!newGamesContainer) return;
@@ -48,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'game-card';
 
-            const imgSrc = game.image_url || ''; // ゲーム画像URL
+            const imgSrc = getPrimaryImage(game.image_url); // ゲーム画像URL
             // 画像がない場合のプレースホルダー画像
             const placeholder =
                 'https://placehold.co/300x200?text=' + encodeURIComponent(game.title);

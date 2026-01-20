@@ -12,6 +12,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterSelect = document.getElementById('game-filter');
     const presetGenres = Array.isArray(window.GAME_GENRES) ? window.GAME_GENRES : [];
 
+    function parseImageList(value) {
+        if (!value) return [];
+        if (Array.isArray(value)) {
+            return value
+                .map((item) => String(item || '').trim())
+                .filter(Boolean);
+        }
+        const raw = String(value).trim();
+        if (!raw) return [];
+        if (raw.startsWith('[')) {
+            try {
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed)) {
+                    return parsed
+                        .map((item) => String(item || '').trim())
+                        .filter(Boolean);
+                }
+            } catch (err) {
+            }
+        }
+        return raw
+            .split(/[\n,]+/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+    }
+
+    function getPrimaryImage(value) {
+        const images = parseImageList(value);
+        return images[0] || '';
+    }
+
     // ===== ゲーム一覧をAPIから取得 =====
     async function loadGames() {
         if (!gameListContainer) return;
@@ -178,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'game-list-card';
 
-            const imgSrc = game.image_url || ''; // 画像URL
+            const imgSrc = getPrimaryImage(game.image_url); // 画像URL
             const placeholderSrc = 'images/placeholder.svg'; // 画像なし時の代替
 
             card.innerHTML = `

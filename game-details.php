@@ -55,9 +55,12 @@ require_once __DIR__ . '/auth_check.php';
     <main class="container game-details-main">
         <div class="game-details-card">
             <div class="game-header">
-                <div class="game-img-container">
-                    <img id="details-img" src="" alt="Game Image"
-                        onerror="this.src='https://placehold.co/300x300?text=No+Image'">
+                <div class="game-gallery">
+                    <div class="game-img-container">
+                        <img id="details-img" src="" alt="Game Image"
+                            onerror="this.src='https://placehold.co/300x300?text=No+Image'">
+                    </div>
+                    <div id="details-thumbs" class="game-thumb-list" aria-label="Game images"></div>
                 </div>
                 <div class="game-info">
                     <h1 id="details-title" class="game-title">Loading...</h1>
