@@ -173,7 +173,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     }
                                     $metaLabel = $metaParts ? implode(' / ', $metaParts) : '';
                                     $genreLabel = !empty($game['genre']) ? (string) $game['genre'] : '';
-                                    $imageUrl = !empty($game['image_url']) ? (string) $game['image_url'] : '';
+                                    $imageUrl = '';
+                                    if (!empty($game['image_url'])) {
+                                        $imageParts = preg_split('/[,\r\n]+/', (string) $game['image_url']);
+                                        foreach ($imageParts as $imagePart) {
+                                            $imagePart = trim($imagePart);
+                                            if ($imagePart !== '') {
+                                                $imageUrl = $imagePart;
+                                                break;
+                                            }
+                                        }
+                                    }
                                     $optionLabel = $game['title'] . ($metaLabel !== '' ? '（' . $metaLabel . '）' : '');
                                     ?>
                                     <option value="<?php echo htmlspecialchars((string) $game['id'], ENT_QUOTES, 'UTF-8'); ?>"

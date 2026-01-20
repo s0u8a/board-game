@@ -86,22 +86,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $imageUrl = null;
         if ($formValues['image_url'] !== '') {
-            $imageInput = str_replace('\\', '/', $formValues['image_url']);
-            if (filter_var($imageInput, FILTER_VALIDATE_URL)) {
-                $imageUrl = $imageInput;
-            } else {
+            $imageInputs = preg_split('/[,\r\n]+/', (string)$formValues['image_url']);
+            $imageUrls = [];
+
+            foreach ($imageInputs as $imageInput) {
+                $imageInput = trim($imageInput);
+                if ($imageInput === '') {
+                    continue;
+                }
+
+                $imageInput = str_replace('\\', '/', $imageInput);
+                if (filter_var($imageInput, FILTER_VALIDATE_URL)) {
+                    $imageUrls[] = $imageInput;
+                    continue;
+                }
+
                 $normalized = ltrim($imageInput, '/');
                 $isSafePath = preg_match('/^[A-Za-z0-9][A-Za-z0-9._\/-]*$/', $normalized)
                     && strpos($normalized, '..') === false;
 
                 if (!$isSafePath) {
                     $errors[] = '画像URLまたはファイル名が正しくありません。';
-                } else {
-                    if (strpos($normalized, '/') === false) {
-                        $normalized = 'img/' . $normalized;
-                    }
-                    $imageUrl = $normalized;
+                    break;
                 }
+
+                if (strpos($normalized, '/') === false) {
+                    $normalized = 'img/' . $normalized;
+                }
+                $imageUrls[] = $normalized;
+            }
+
+            if (empty($errors) && !empty($imageUrls)) {
+                $imageUrl = implode(', ', $imageUrls);
             }
         }
 
@@ -357,8 +373,8 @@ try {
                         </div>
 
                         <div class="form-field form-field-full">
-                            <label for="image_url">画像URL/ファイル名</label>
-                            <input type="text" id="image_url" name="image_url" placeholder="例: bg_image1.jpg"
+                            <label for="image_url">画像URL/ファイル名（カンマ/改行で複数可）</label>
+                            <input type="text" id="image_url" name="image_url" placeholder="例: img/quoridor.jpg, img/quoridor_2.jpg"
                                 value="<?php echo htmlspecialchars($formValues['image_url'], ENT_QUOTES, 'UTF-8'); ?>">
                         </div>
 
@@ -386,6 +402,7 @@ try {
                         <table class="admin-table">
                             <thead>
                                 <tr>
+                                    <th>No.</th>
                                     <th>ID</th>
                                     <th>タイトル</th>
                                     <th>ジャンル</th>
@@ -397,8 +414,9 @@ try {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($games as $game): ?>
+                                <?php foreach ($games as $index => $game): ?>
                                     <tr>
+                                        <td><?php echo $index + 1; ?></td>
                                         <td><?php echo (int)$game['id']; ?></td>
                                         <td><?php echo htmlspecialchars($game['title'], ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td><?php echo htmlspecialchars($game['genre'] ?? '-', ENT_QUOTES, 'UTF-8'); ?></td>
@@ -420,8 +438,21 @@ try {
                                         <td><?php echo htmlspecialchars($game['difficulty'] ?? '-', ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td><?php echo htmlspecialchars($game['play_time'] ?? '-', ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td>
-                                            <?php if (!empty($game['image_url'])): ?>
-                                                <a href="<?php echo htmlspecialchars($game['image_url'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">表示</a>
+                                            <?php
+                                                $firstImageUrl = '';
+                                                if (!empty($game['image_url'])) {
+                                                    $imageParts = preg_split('/[,\r\n]+/', (string)$game['image_url']);
+                                                    foreach ($imageParts as $imagePart) {
+                                                        $imagePart = trim($imagePart);
+                                                        if ($imagePart !== '') {
+                                                            $firstImageUrl = $imagePart;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            ?>
+                                            <?php if (!empty($firstImageUrl)): ?>
+                                                <a href="<?php echo htmlspecialchars($firstImageUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">表示</a>
                                             <?php else: ?>
                                                 -
                                             <?php endif; ?>

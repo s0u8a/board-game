@@ -17,6 +17,34 @@ document.addEventListener('DOMContentLoaded', () => {
         return parseInt(params.get('id'), 10);
     };
 
+    const placeholderImage = 'https://placehold.co/300x300?text=No+Image';
+
+    const normalizeImageList = (value) => {
+        if (!value) return [];
+        if (Array.isArray(value)) {
+            return value
+                .map((item) => String(item || '').trim())
+                .filter(Boolean);
+        }
+        const raw = String(value).trim();
+        if (!raw) return [];
+        if (raw.startsWith('[')) {
+            try {
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed)) {
+                    return parsed
+                        .map((item) => String(item || '').trim())
+                        .filter(Boolean);
+                }
+            } catch (err) {
+            }
+        }
+        return raw
+            .split(/[\n,]+/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+    };
+
     const generateStars = (rating) => {
         const r = isNaN(rating) ? 0 : Number(rating);
         const fullStars = Math.floor(r);
@@ -36,6 +64,64 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         starsHtml += `<span class="game-rating-value">${r.toFixed(1)}</span>`;
         return starsHtml;
+    };
+
+    const renderImageGallery = (title, rawImages) => {
+        const imgEl = document.getElementById('details-img');
+        const thumbsEl = document.getElementById('details-thumbs');
+        if (!imgEl) return;
+
+        const images = normalizeImageList(rawImages);
+        const mainImage = images[0] || placeholderImage;
+        imgEl.src = mainImage;
+        imgEl.alt = title || 'Game image';
+
+        if (!thumbsEl) return;
+
+        thumbsEl.innerHTML = '';
+
+        if (images.length <= 1) {
+            thumbsEl.style.display = 'none';
+            return;
+        }
+
+        thumbsEl.style.display = '';
+        const buttons = [];
+
+        const setActive = (index) => {
+            buttons.forEach((button, buttonIndex) => {
+                const isActive = buttonIndex === index;
+                button.classList.toggle('active', isActive);
+                button.setAttribute('aria-current', isActive ? 'true' : 'false');
+            });
+        };
+
+        images.forEach((src, index) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'game-thumb-btn';
+            button.setAttribute('aria-label', `${title || 'Game'} image ${index + 1}`);
+
+            const thumb = document.createElement('img');
+            thumb.src = src;
+            thumb.alt = `${title || 'Game'} thumbnail ${index + 1}`;
+            thumb.onerror = () => {
+                thumb.src = placeholderImage;
+                thumb.onerror = null;
+            };
+
+            button.appendChild(thumb);
+            button.addEventListener('click', () => {
+                imgEl.src = src;
+                imgEl.alt = title || 'Game image';
+                setActive(index);
+            });
+
+            thumbsEl.appendChild(button);
+            buttons.push(button);
+        });
+
+        setActive(0);
     };
 
     const gameId = getGameIdFromUrl();
@@ -68,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.title = `${game.title} - Board Game Cafe`;
 
         const titleEl = document.getElementById('details-title');
-        const imgEl = document.getElementById('details-img');
         const ratingEl = document.getElementById('details-rating');
         const statusEl = document.getElementById('details-status');
         const descEl = document.getElementById('details-desc');
@@ -77,10 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Removed reserveBtn logic from here as it is now at the top level
 
         if (titleEl) titleEl.textContent = game.title;
-        if (imgEl) {
-            imgEl.src = game.image_url || '';
-            imgEl.alt = game.title;
-        }
+        renderImageGallery(game.title, game.image_urls || game.image_url);
         if (ratingEl) ratingEl.innerHTML = `<span class="stars">${generateStars(game.rating || 0)}</span>`;
 
         if (statusEl) {
