@@ -1,8 +1,14 @@
 
 <?php
 require_once 'db_connect.php';  // DB接続
+require_once __DIR__ . '/init.php';
 
 $error = '';
+
+// ユーザー情報取得
+$stmt = $pdo->prepare('SELECT name, email, age FROM users WHERE id = :id');
+$stmt->execute([':id' => $_SESSION['user_id']]);
+$user = $stmt->fetch();
 
 // フォームが送信されたときだけ実行
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($nickname === '' || $email === '' || $age === 0) {
         $error = '未入力の項目があります。';
     } else {
+        /*
         // 2. メールアドレス重複チェック
         $sql = 'SELECT id FROM users WHERE email = :email';
         $stmt = $pdo->prepare($sql);
@@ -23,25 +30,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $user = $stmt->fetch();
 
-        if ($user) {
-            $error = 'このメールアドレスは既に登録されています。';
-        } else {
-            // 3. users テーブルに INSERT
+        */
+
+        //if ($user) {
+        //    $error = 'このメールアドレスは既に登録されています。';
+        //} else {
+            // 3. users テーブルを UPDATE
             //    nickname → DB の name カラムに入れているのがポイント
-            $sql = 'INSERT INTO users (name, email, password, age)
-                    VALUES (:name, :email, :password, :age)';
+            $sql = 'UPDATE users SET name = :name, email = :email, age = :age WHERE id = :id';
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':name', $nickname, PDO::PARAM_STR);
             $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-            $stmt->bindValue(':age', $age, PDO::PARAM_INT); //要修正(年齢->生年月日)
-            //日付は YYYY-MM-DD の形式でformから渡されるみたいです
+            $stmt->bindValue(':age', $age, PDO::PARAM_INT);
+            $stmt->bindValue(':id', $_SESSION['user_id'], PDO::PARAM_INT);
 
             $stmt->execute();
 
             // 6. 変更完了 → マイページへ
             header('Location: mypage.php');
             exit;
-        }
+        //}
     }
 }
 ?>
@@ -71,15 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php endif; ?>
 
         <div class="register_form">
-            <form action="register.php" method="post">
+            <form action="edit_profile.php" method="post">
                 <p><label for="nickname">ニックネーム</label></p>
-                <p><input type="text" name="nickname" id="nickname"></p>
+                <p><input type="text" name="nickname" id="nickname" value="<?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?>"></p>
 
                 <p><label for="email">メールアドレス</label></p>
-                <p><input type="text" name="email" id="email"></p>
+                <p><input type="text" name="email" id="email" value="<?= htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8') ?>"></p>
 
                 <p><label for="age">年齢</label></p>
-                <p><input type="number" name="age" id="age" value="18" min="0" max="120"></p>
+                <p><input type="number" name="age" id="age" value="<?= htmlspecialchars($user['age'], ENT_QUOTES, 'UTF-8') ?>" min="0" max="120"></p>
 
                 <button type="submit">変更する</button>
             </form>
